@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { AlertCircle, CheckCircle, HelpCircle, ShieldAlert, Loader2, Send, Shield, Image as ImageIcon, X, Video, ScanLine } from 'lucide-react';
-import { analyzeRumor, hasApiKey } from '../services/geminiService';
+import { analyzeRumor } from '../services/geminiService';
 import { RumorAnalysisResult, Language } from '../types';
 
 interface RumorCheckerProps {
@@ -17,16 +17,13 @@ export const RumorChecker: React.FC<RumorCheckerProps> = ({ language }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  
   const t = {
     title: language === 'en' ? 'Rumor Checker' : 'গুজব যাচাই কেন্দ্র',
     subtitle: language === 'en' ? 'Verify Misinformation' : 'ভুল তথ্য যাচাই করুন',
     desc: language === 'en' 
       ? 'Unsure about something you saw on social media? Paste it here for an AI-assisted analysis.'
       : 'সোশ্যাল মিডিয়ায় যা দেখেছেন তা নিয়ে নিশ্চিত নন? এআই বিশ্লেষণের জন্য এখানে পেস্ট করুন।',
-    demoWarning: language === 'en'
-      ? 'Demo Mode: The Gemini API key is not configured. The app will use simulated responses.'
-      : 'ডেমো মোড: জেমিনি এপিআই কি কনফিগার করা নেই। অ্যাপটি সিমুলেটেড উত্তর ব্যবহার করবে।',
     labelCategory: language === 'en' ? 'Category' : 'বিভাগ',
     labelInput: language === 'en' ? 'Text to Analyze' : 'যাচাই করার জন্য টেক্সট',
     placeholder: language === 'en' ? 'Paste the post, message, or claim here...' : 'পোস্ট, বার্তা বা দাবি এখানে পেস্ট করুন...',
@@ -58,8 +55,7 @@ export const RumorChecker: React.FC<RumorCheckerProps> = ({ language }) => {
       setPreviewUrl(URL.createObjectURL(file));
     }
   };
-
-  const clearFile = () => {
+   const clearFile = () => {
     setSelectedFile(null);
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(null);
@@ -124,21 +120,6 @@ export const RumorChecker: React.FC<RumorCheckerProps> = ({ language }) => {
         </p>
       </div>
 
-      {!hasApiKey() && (
-        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded-r-md">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <AlertCircle className="h-5 w-5 text-yellow-400" aria-hidden="true" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm text-yellow-700">
-                <strong>{t.demoWarning}</strong>
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Feature Info Block */}
       <div className="bg-blue-50 border border-blue-100 p-4 rounded-lg mb-6 shadow-sm">
         <h4 className="font-bold text-blue-900 mb-2 flex items-center gap-2 text-sm uppercase tracking-wide">
@@ -172,7 +153,7 @@ export const RumorChecker: React.FC<RumorCheckerProps> = ({ language }) => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               rows={4}
-              className="w-full rounded-md border-gray-300 shadow-sm focus:border-bangla-green focus:ring focus:ring-bangla-green focus:ring-opacity-50 py-2 px-3 border text-gray-900 placeholder-gray-500"
+              className="w-full rounded-md border-gray-300 shadow-sm focus:border-bangla-green focus:ring focus:ring-bangla-green focus:ring-opacity-50 py-2 px-3 border text-gray-900 placeholder-gray-500 bg-white"
               placeholder={t.placeholder}
             />
           </div>
@@ -190,12 +171,12 @@ export const RumorChecker: React.FC<RumorCheckerProps> = ({ language }) => {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-2 text-sm text-bangla-green hover:bg-green-50 px-3 py-4 rounded-md transition-colors border-2 border-dashed border-bangla-green/40 w-full justify-center hover:border-bangla-green"
+                  className="flex items-center gap-2 text-sm text-bangla-green hover:bg-green-50 px-3 py-4 rounded-md transition-colors border-2 border-dashed border-bangla-green/40 w-full justify-center hover:border-bangla-green bg-white"
                 >
                   <ImageIcon size={20} />
                   {t.uploadBtn}
                 </button>
-              ) : (
+                   ) : (
                 <div className="relative mt-2 border border-gray-200 rounded-md p-2 bg-gray-50">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-bold text-gray-700 truncate max-w-[200px]">
@@ -264,7 +245,7 @@ export const RumorChecker: React.FC<RumorCheckerProps> = ({ language }) => {
                 </div>
               </div>
             </div>
-
+            
             {/* Content */}
             <div className="p-6 space-y-6">
               <div>
@@ -301,3 +282,4 @@ export const RumorChecker: React.FC<RumorCheckerProps> = ({ language }) => {
     </div>
   );
 };
+      
