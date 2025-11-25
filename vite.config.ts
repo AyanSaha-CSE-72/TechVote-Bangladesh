@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
 return {
     plugins: [react()],
     server: {
-      allowedHosts: ['rcqtr9-5173.csb.app'],
+      allowedHosts: ['ydz2cg-5173.csb.app'],
       host: true
     },
     define: {
